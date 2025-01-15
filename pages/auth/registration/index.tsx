@@ -19,6 +19,7 @@ const Registration: React.FC = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<registerProps>();
   const { mutate, isPending } = registerMutation();
@@ -41,6 +42,8 @@ const Registration: React.FC = () => {
     }
     mutate(formdata, {});
     console.log(formdata);
+    reset();
+    setImage(null);
   };
 
   return (

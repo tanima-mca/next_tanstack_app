@@ -8,6 +8,10 @@ const axiosInstance = axios.create({
   baseURL,
 });
 
+export const productt = (media:string) => {
+  return `https://wtsacademy.dedicateddevelopers.us/uploads/product/${media}`;
+};
+
 export const profile_pic = (media: string) => {
   return `https://wtsacademy.dedicateddevelopers.us/uploads/user/profile_pic/${media}`;
 };

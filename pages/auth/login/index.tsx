@@ -19,6 +19,7 @@ const Login: React.FC = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<loginProps>();
   const { mutate, isPending } = loginMutation();
@@ -36,6 +37,7 @@ const Login: React.FC = () => {
     formdata.append("password", password);
     mutate(formData, {});
     console.log(formData);
+    reset();
 
     // router.push("/cms/list");
   };
