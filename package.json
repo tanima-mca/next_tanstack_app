@@ -20,7 +20,9 @@
     "react-bootstrap-sweetalert": "^5.2.0",
     "react-cookie": "^7.2.2",
     "react-dom": "^19.0.0",
-    "react-hook-form": "^7.54.2"
+    "react-hook-form": "^7.54.2",
+    "react-hot-toast": "^2.5.1",
+    "react-toastify": "^11.0.3"
   },
   "devDependencies": {
     "@types/node": "^20",

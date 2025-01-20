@@ -14,6 +14,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { loginMutation } from "@/customHooks/query/auth.query.hooks";
 import { loginProps } from "@/typeScript/auth.interface";
+import { useRouter } from "next/router";
 
 const Login: React.FC = () => {
   const {
@@ -22,6 +23,7 @@ const Login: React.FC = () => {
     reset,
     formState: { errors },
   } = useForm<loginProps>();
+  const router = useRouter();
   const { mutate, isPending } = loginMutation();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -38,9 +40,13 @@ const Login: React.FC = () => {
     mutate(formData, {});
     console.log(formData);
     reset();
-
-    // router.push("/cms/list");
+    //  router.push("/cms/list");
   };
+
+  const handleLoginError = () => {
+      router.push("/auth/registration"); 
+    }
+  
 
   return (
     <>
@@ -138,8 +144,7 @@ const Login: React.FC = () => {
                 fontWeight: "bold",
                 textTransform: "none",
               }}
-              // Uncomment below if navigation is implemented
-              // onClick={() => navigate("/register")}
+              onClick={handleLoginError}
             >
               Don’t have an account? Register here
             </Button>

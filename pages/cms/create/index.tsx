@@ -38,7 +38,6 @@ const ProductCreate: React.FC = () => {
       onSuccess: () => {
         reset();
         setImage(null);
-        alert("Product created successfully!");
       },
     });
   };

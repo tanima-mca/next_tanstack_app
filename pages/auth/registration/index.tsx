@@ -14,6 +14,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { useRouter } from "next/router";
 
 const Registration: React.FC = () => {
   const {
@@ -22,6 +23,7 @@ const Registration: React.FC = () => {
     reset,
     formState: { errors },
   } = useForm<registerProps>();
+  const router = useRouter();
   const { mutate, isPending } = registerMutation();
   const [showPassword, setShowPassword] = useState(false);
   const [image, setImage] = useState<File | null>(null);
@@ -31,7 +33,8 @@ const Registration: React.FC = () => {
   };
 
   const onSubmit = async (formData: FieldValues) => {
-    const { first_name, last_name, email, password } = formData as registerProps;
+    const { first_name, last_name, email, password } =
+      formData as registerProps;
     const formdata = new FormData();
     formdata.append("first_name", first_name);
     formdata.append("last_name", last_name);
@@ -44,6 +47,10 @@ const Registration: React.FC = () => {
     console.log(formdata);
     reset();
     setImage(null);
+  };
+
+  const handleRegisterError = () => {
+    router.push("/auth/login");
   };
 
   return (
@@ -143,9 +150,9 @@ const Registration: React.FC = () => {
           </IconButton>
         </Box>
         <TextField
-         {...register("profile_pic", {
-           required: "Profile picture is required",
-         })}
+          {...register("profile_pic", {
+            required: "Profile picture is required",
+          })}
           type="file"
           fullWidth
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -192,16 +199,21 @@ const Registration: React.FC = () => {
         >
           {isPending ? "Registering..." : "Register Now!"}
         </Button>
-        <Typography align="center" sx={{ marginTop: 2 }}>
-          Already have an account?{" "}
-          {/* <Link to="/" style={{ textDecoration: "none", fontWeight: 600 }}> */}
-          Login
-          {/* </Link> */}
-        </Typography>
+        <Button
+          variant="text"
+          fullWidth
+          style={{
+            color: "#3949ab",
+            fontWeight: "bold",
+            textTransform: "none",
+          }}
+          onClick={handleRegisterError}
+        >
+          Already have an account? Login
+        </Button>
       </Box>
     </Grid2>
   );
 };
 
 export default Registration;
-

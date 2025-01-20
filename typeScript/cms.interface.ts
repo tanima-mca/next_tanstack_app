@@ -41,3 +41,39 @@ export interface deleteProps extends IdeleteProps {
     status: number;
     token: string;
   }
+
+
+  export interface IupdateProps {
+    id: string;
+    token: string;
+    message: string;
+    status: number;
+    title: string;
+    image: string;
+    description: string;
+  }
+  
+  export interface updateProps extends IupdateProps {
+      user: IupdateProps;
+      status: number;
+      token: string;
+    }  
+
+
+
+    export interface IdetailsProps {
+      id: string;
+      token: string;
+      message: string;
+      status: number;
+      title: string;
+      description: string;
+      image:string;
+    }
+    
+    export interface detailsProps extends IdetailsProps {
+        user: IdeleteProps;
+        status: number;
+        token: string;
+      }
+    

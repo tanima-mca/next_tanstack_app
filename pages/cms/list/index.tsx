@@ -16,15 +16,18 @@ import {
   Paper,
   Switch,
   FormControlLabel,
-  IconButton,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import { productt } from "@/api/axios/axios";
 import { useState } from "react";
 import SweetAlertComponent from "@/ui/sweetalert";
-import { FieldValues } from "react-hook-form";
-import {allProductsQuery,deleteMutation,} from "@/customHooks/query/cms.query.createhooks";
+import {
+  allProductsQuery,
+  deleteMutation,
+} from "@/customHooks/query/cms.query.createhooks";
+import { deleteProps } from "@/typeScript/cms.interface";
 
 export default function List() {
   const {
@@ -35,9 +38,11 @@ export default function List() {
   const { mutate, isPending } = deleteMutation();
 
   const [isTableView, setIsTableView] = useState(false);
-  const [deleteId, setDeleteId] = useState(null);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  // const [editId, setEditId] = useState<string | null>(null);
   const [modal, setModal] = useState(false);
   console.log(deleteId, "deleteId");
+
   const products = Array.isArray(list)
     ? list.map((product) => ({
         ...product,
@@ -47,19 +52,40 @@ export default function List() {
 
   const toggleView = () => setIsTableView((prev) => !prev);
 
-  const handleDelete = async (formData: FieldValues) => {
-    // setModal: (value: boolean) => void;
+  // const handleDelete = async (formData: deleteProps) => {
+  //   // setModal: (value: boolean) => void;
+
+  //   const formdata = new FormData();
+  //   formdata.append("id", deleteId);
+  //   mutate(formdata, {});
+  //   setModal(false);
+  //   console.log(formData);
+  // };
+
+  const handleDelete = async (formData: deleteProps) => {
+    if (!deleteId) {
+      return;
+    }
 
     const formdata = new FormData();
     formdata.append("id", deleteId);
+
     mutate(formdata, {});
     setModal(false);
     console.log(formData);
   };
 
-  // const handleEdit = (productId: string) => {
-  //   console.log(`Edit product with id: ${productId}`);
-  // };
+  // const handleEdit = async (formData: detailsProps) => {
+  //   if (!editId) {
+  //     return;
+  //   }
+
+  //   const formdata = new FormData();
+  //   formdata.append("id", editId);
+
+  //   mutate(formdata, {});
+  //     console.log(formData);
+  //   };
 
   return (
     <>
@@ -194,7 +220,11 @@ export default function List() {
                           gap: 2,
                         }}
                       >
-                        <Button variant="contained" size="medium">
+                        <Button
+                          //  href={`/cms/list/${product._id}`}
+                          variant="contained"
+                          size="medium"
+                        >
                           View Details
                         </Button>
                         <Box>
@@ -207,13 +237,22 @@ export default function List() {
                           >
                             <DeleteIcon />
                           </IconButton>
-                          <IconButton
-                            size="small"
-                            color="primary"
-                            // onClick={() => handleEdit(product._id)}
+                          <Button
+                            href={`/cms/list/${product._id}`}
+                            variant="contained"
+                            size="medium"
+                            // onClick={(handleEdit)=>
+                            //   setEditId(product._id)
+                            // }
                           >
-                            <EditIcon />
-                          </IconButton>
+                            Edit
+                          </Button>
+                          {/* <IconButton
+                           href={`/cms/list/${product._id}`}
+                           variant="contained"
+                           size="medium">
+                            <EditIcon  />
+                          </IconButton> */}
                         </Box>
                       </Box>
                     </CardActions>
@@ -229,7 +268,7 @@ export default function List() {
             )}
           </Grid>
         )}
-        {modal && (
+        {modal && deleteId && (
           <SweetAlertComponent
             confirm={handleDelete}
             cancle={() => setModal(false)}
