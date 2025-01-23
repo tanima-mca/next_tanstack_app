@@ -167,7 +167,7 @@ export default function UpdateProduct() {
             {image ? (
               <img
                 height="60px"
-                src={URL.createObjectURL(image))}
+                src={URL.createObjectURL(image)}
                 alt="Preview"
                 className="upload-img"
               />

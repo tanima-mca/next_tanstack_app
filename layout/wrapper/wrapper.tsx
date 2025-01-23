@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
-import ResponsiveAppBar from "../header/header";
+import Header from "../header/header";
+
 
 interface props {
   children: ReactNode;
@@ -7,7 +8,7 @@ interface props {
 const Wrapper: React.FC<props> = ({ children }) => {
   return (
     <div>
-      <ResponsiveAppBar />
+      <Header/>
       {children}
     </div>
   );

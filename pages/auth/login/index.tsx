@@ -40,11 +40,13 @@ const Login: React.FC = () => {
     mutate(formData, {});
     console.log(formData);
     reset();
-    //  router.push("/cms/list");
+    router.push("/cms/list")
+    
   };
 
   const handleLoginError = () => {
       router.push("/auth/registration"); 
+      
     }
   
 

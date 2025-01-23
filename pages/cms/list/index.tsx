@@ -16,79 +16,186 @@ import {
   Paper,
   Switch,
   FormControlLabel,
+  CircularProgress,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
-import EditIcon from "@mui/icons-material/Edit";
-import { productt } from "@/api/axios/axios";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import SweetAlertComponent from "@/ui/sweetalert";
 import {
   allProductsQuery,
   deleteMutation,
 } from "@/customHooks/query/cms.query.createhooks";
-import { deleteProps } from "@/typeScript/cms.interface";
+import ProductDetailsModal from "../productdetails/productdetails";
+import { productt, profile_pic } from "@/api/axios/axios";
 
 export default function List() {
-  const {
-    data: list,
-    isPending: isPendingCategories,
-    isError: isErrorCategories,
-  } = allProductsQuery();
-  const { mutate, isPending } = deleteMutation();
-
+  const [page, setPage] = useState(1);
   const [isTableView, setIsTableView] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
-  // const [editId, setEditId] = useState<string | null>(null);
+  const [selectedProductId, setSelectedProductId] = useState<
+    string | number | null
+  >(null);
   const [modal, setModal] = useState(false);
-  console.log(deleteId, "deleteId");
+  const [isModalOpen, setModalOpen] = useState(false);
+  console.log(page, "page");
+  const perPage = 10;
 
-  const products = Array.isArray(list)
-    ? list.map((product) => ({
-        ...product,
-        image: productt(product.image),
-      }))
-    : [];
+  const {
+    data: list,
+    isPending,
+    isError,
+    error,
+  } = allProductsQuery(page, perPage);
+
+  const totalPages = list?.data.totalPages || 1;
+  console.log(perPage, "perPage");
+  const products = list?.data.data || [];
+
+  const { mutate, isPending: isDeleting } = deleteMutation();
 
   const toggleView = () => setIsTableView((prev) => !prev);
 
-  // const handleDelete = async (formData: deleteProps) => {
-  //   // setModal: (value: boolean) => void;
+  const handleDelete = () => {
+    if (!deleteId) return;
 
-  //   const formdata = new FormData();
-  //   formdata.append("id", deleteId);
-  //   mutate(formdata, {});
-  //   setModal(false);
-  //   console.log(formData);
-  // };
+    const formData = new FormData();
+    formData.append("id", deleteId);
 
-  const handleDelete = async (formData: deleteProps) => {
-    if (!deleteId) {
-      return;
-    }
-
-    const formdata = new FormData();
-    formdata.append("id", deleteId);
-
-    mutate(formdata, {});
-    setModal(false);
-    console.log(formData);
+    mutate(formData, {
+      onSuccess: () => {
+        toast.success("Product deleted successfully!");
+        setModal(false);
+        setDeleteId(null);
+      },
+      onError: () => {
+        toast.error("Failed to delete the product.");
+      },
+    });
   };
 
-  // const handleEdit = async (formData: detailsProps) => {
-  //   if (!editId) {
-  //     return;
-  //   }
+  const handleNextPage = () => {
+    if (page < totalPages) setPage((prev) => prev + 1);
+  };
 
-  //   const formdata = new FormData();
-  //   formdata.append("id", editId);
+  const handlePreviousPage = () => {
+    if (page > 1) setPage((prev) => prev - 1);
+  };
 
-  //   mutate(formdata, {});
-  //     console.log(formData);
-  //   };
+  const handleOpenModal = (id: string | number) => {
+    setSelectedProductId(id);
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setSelectedProductId(null);
+  };
+
+  const renderTableRow = (product: any) => (
+    <TableRow key={product._id}>
+      <TableCell>
+        <img
+          src={productt(product.image) || "/placeholder.jpg"}
+          alt={product.title}
+          style={{ height: "100px", objectFit: "contain" }}
+        />
+      </TableCell>
+      <TableCell>{product.title}</TableCell>
+      <TableCell>{product.description}</TableCell>
+      <TableCell align="center">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => handleOpenModal(product._id)}
+        >
+          View
+        </Button>
+        <IconButton
+          color="error"
+          onClick={() => {
+            setDeleteId(product._id);
+            setModal(true);
+          }}
+        >
+          <DeleteIcon />
+        </IconButton>
+        <Button href={`/cms/list/${product._id}`} variant="contained">
+          Edit
+        </Button>
+      </TableCell>
+    </TableRow>
+  );
+
+  const renderCard = (product: any) => (
+    <Grid item xs={12} sm={6} md={4} key={product._id}>
+      <Card
+        sx={{
+          transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+          "&:hover": { transform: "scale(1.05)", boxShadow: 8 },
+        }}
+      >
+        <CardMedia
+          component="img"
+          height="200"
+          image={productt(product.image) || "/placeholder.jpg"}
+          alt={product.title}
+          sx={{ objectFit: "contain" }}
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h6" component="div" align="center">
+            {product.title}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" align="center">
+            {product.description}
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            width="100%"
+            sx={{
+              padding: 1,
+              border: "1px solid #ccc",
+              borderRadius: "8px",
+              gap: 2,
+            }}
+          >
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleOpenModal(product._id)}
+            >
+              View Details
+            </Button>
+            <IconButton
+              color="error"
+              onClick={() => {
+                setDeleteId(product._id);
+                setModal(true);
+              }}
+            >
+              <DeleteIcon />
+            </IconButton>
+            <Button href={`/cms/list/${product._id}`} variant="contained">
+              Edit
+            </Button>
+          </Box>
+        </CardActions>
+      </Card>
+    </Grid>
+  );
 
   return (
-    <>
+    <Box
+      sx={{
+        maxWidth: "1400px",
+        margin: "0 auto",
+        padding: "0 16px",
+      }}
+    >
       <Typography
         variant="h4"
         align="center"
@@ -98,186 +205,78 @@ export default function List() {
         Product List
       </Typography>
 
-      <Box
-        sx={{
-          maxWidth: "1300px",
-          margin: "0 auto",
-          padding: "0 16px",
-        }}
-      >
-        <FormControlLabel
-          control={<Switch checked={isTableView} onChange={toggleView} />}
-          label="Toggle Table View"
-        />
+      <FormControlLabel
+        control={<Switch checked={isTableView} onChange={toggleView} />}
+        label="Toggle Table View"
+      />
 
-        {isTableView ? (
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Image</TableCell>
-                  <TableCell>Title</TableCell>
-                  <TableCell>Description</TableCell>
-                  <TableCell align="center">Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {products.length > 0 ? (
-                  products.map((product) => (
-                    <TableRow key={product._id}>
-                      <TableCell>
-                        <img
-                          src={product.image}
-                          alt={product.title}
-                          style={{ height: "100px", objectFit: "contain" }}
-                        />
-                      </TableCell>
-                      <TableCell>{product.title}</TableCell>
-                      <TableCell>{product.description}</TableCell>
-                      <TableCell align="center">
-                        <Button variant="contained" size="small">
-                          View
-                        </Button>
-                        <IconButton
-                          color="error"
-                          onClick={() => {
-                            setDeleteId(product._id);
-                            setModal(true);
-                          }}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                        <IconButton
-                          size="small"
-                          color="primary"
-                          // onClick={() => handleEdit(product._id)}
-                        >
-                          <EditIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={4} align="center">
-                      {isPendingCategories
-                        ? "Loading products..."
-                        : "No products found."}
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        ) : (
-          <Grid container spacing={4}>
-            {products.length > 0 ? (
-              products.map((product) => (
-                <Grid item xs={12} sm={6} md={4} key={product._id}>
-                  <Card
-                    sx={{
-                      transition:
-                        "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
-                      "&:hover": {
-                        transform: "scale(1.05)",
-                        boxShadow: 6,
-                      },
-                    }}
-                  >
-                    <CardMedia
-                      component="img"
-                      height="200"
-                      image={product.image}
-                      alt={product.title}
-                      sx={{ objectFit: "contain" }}
-                    />
-                    <CardContent>
-                      <Typography
-                        gutterBottom
-                        variant="h6"
-                        component="div"
-                        align="center"
-                      >
-                        {product.title}
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        color="text.secondary"
-                        align="center"
-                      >
-                        {product.description}
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Box
-                        display="flex"
-                        justifyContent="space-between"
-                        width="100%"
-                        sx={{
-                          padding: 1,
-                          border: "1px solid #ccc",
-                          borderRadius: "8px",
-                          gap: 2,
-                        }}
-                      >
-                        <Button
-                          //  href={`/cms/list/${product._id}`}
-                          variant="contained"
-                          size="medium"
-                        >
-                          View Details
-                        </Button>
-                        <Box>
-                          <IconButton
-                            color="error"
-                            onClick={() => {
-                              setDeleteId(product._id);
-                              setModal(true);
-                            }}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                          <Button
-                            href={`/cms/list/${product._id}`}
-                            variant="contained"
-                            size="medium"
-                            // onClick={(handleEdit)=>
-                            //   setEditId(product._id)
-                            // }
-                          >
-                            Edit
-                          </Button>
-                          {/* <IconButton
-                           href={`/cms/list/${product._id}`}
-                           variant="contained"
-                           size="medium">
-                            <EditIcon  />
-                          </IconButton> */}
-                        </Box>
-                      </Box>
-                    </CardActions>
-                  </Card>
-                </Grid>
-              ))
-            ) : (
-              <Typography align="center" width="100%">
-                {isPendingCategories
-                  ? "Loading products..."
-                  : "No products found."}
-              </Typography>
-            )}
-          </Grid>
-        )}
-        {modal && deleteId && (
-          <SweetAlertComponent
-            confirm={handleDelete}
-            cancle={() => setModal(false)}
-            title="Are You Sure?"
-            subtitle="You will not be able to recover this product"
-            type="warning"
-          />
-        )}
-      </Box>
-    </>
+      {isPending ? (
+        <CircularProgress sx={{ display: "block", margin: "20px auto" }} />
+      ) : isError ? (
+        <Typography align="center" color="error">
+          Failed to load products. Please try again later.
+        </Typography>
+      ) : products.length === 0 ? (
+        <Typography align="center">No products found.</Typography>
+      ) : isTableView ? (
+        <TableContainer component={Paper} sx={{ borderRadius: "10px" }}>
+          <Table>
+            <TableHead sx={{ background: "#9575cd" }}>
+              <TableRow>
+                <TableCell>Image</TableCell>
+                <TableCell>Title</TableCell>
+                <TableCell>Description</TableCell>
+                <TableCell align="center">Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>{products.map(renderTableRow)}</TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Grid container spacing={4}>
+          {products.map(renderCard)}
+        </Grid>
+      )}
+
+      {modal && (
+        <SweetAlertComponent
+          confirm={handleDelete}
+          cancle={() => setModal(false)}
+          title="Are You Sure?"
+          subtitle="You will not be able to recover this product"
+          type="warning"
+        />
+      )}
+
+      {selectedProductId !== null && (
+        <ProductDetailsModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          id={selectedProductId}
+        />
+      )}
+
+      {products && (
+        <Box display="flex" justifyContent="space-between" mt={4}>
+          <Button
+            variant="contained"
+            disabled={page === 1}
+            onClick={handlePreviousPage}
+          >
+            Previous
+          </Button>
+          <Typography>
+            Page {page} of {totalPages}
+          </Typography>
+          <Button
+            variant="contained"
+            disabled={page === totalPages}
+            onClick={handleNextPage}
+          >
+            Next
+          </Button>
+        </Box>
+      )}
+    </Box>
   );
 }
