@@ -12,7 +12,10 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { updateProps } from "@/typeScript/cms.interface";
-import {fetchProductQuery,updateMutation,} from "@/customHooks/query/cms.query.createhooks";
+import {
+  fetchProductQuery,
+  updateMutation,
+} from "@/customHooks/query/cms.query.createhooks";
 import toast from "react-hot-toast";
 
 export default function UpdateProduct() {
@@ -34,7 +37,7 @@ export default function UpdateProduct() {
   } = useForm<updateProps>();
 
   const { mutate, isPending } = updateMutation();
-  const [image, setImage] = useState<string | File | null>(null);
+  const [image, setImage] = useState<Blob | File | null>(null);
 
   // useEffect(() => {
   //   if (product) {
@@ -56,8 +59,9 @@ export default function UpdateProduct() {
     }
   }, [product, setValue, isPending, isErrorCategories]);
 
-  const sendData = async (e:any) => {
+  const sendData = async (e: any) => {
     const formdata = new FormData();
+    // const { image } = e as { image: File };
     formdata.append("id", id as string);
     formdata.append("title", e.title);
     formdata.append("description", e.description);

@@ -11,10 +11,7 @@ import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { useGlobalHooks } from "../globalHooks/gloBalHooks";
 import { createProductFn } from "@/api/funcTions/create.api";
 import { deleteProductFn } from "@/api/funcTions/delete.api";
-import {
-  allProductDetails,
-  allProductsAPICall,
-} from "@/api/funcTions/list.api";
+import { allProductDetails,allProductsAPICall,} from "@/api/funcTions/list.api";
 import { listProps } from "@/typeScript/cms.interface";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import toast from "react-hot-toast";
