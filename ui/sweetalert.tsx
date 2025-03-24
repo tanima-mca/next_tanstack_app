@@ -19,10 +19,15 @@ function SweetAlertComponent({
       onCancel={cancle}
       focusCancelBtn
     >
-      {subtitle}
     </SweetAlert>
   );
 }
 
+
+
+
 export default SweetAlertComponent;
+
+
+
 

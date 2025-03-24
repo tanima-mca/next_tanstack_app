@@ -302,7 +302,10 @@ import IconButton from "@mui/material/IconButton";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import SweetAlertComponent from "@/ui/sweetalert";
-import {allProductsQuery,deleteMutation,} from "@/customHooks/query/cms.query.createhooks";
+import {
+  allProductsQuery,
+  deleteMutation,
+} from "@/customHooks/query/cms.query.createhooks";
 import ProductDetailsModal from "../productdetails/productdetails";
 import { productt } from "@/api/axios/axios";
 import DownloadingIcon from "@mui/icons-material/Downloading";
@@ -312,7 +315,9 @@ export default function List() {
   const [page, setPage] = useState(1);
   const [isTableView, setIsTableView] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
-  const [selectedProductId, setSelectedProductId] = useState<string | number | null>(null);
+  const [selectedProductId, setSelectedProductId] = useState<
+    string | number | null
+  >(null);
   const [modal, setModal] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const [loadingDetails, setLoadingDetails] = useState(false);
@@ -381,7 +386,7 @@ export default function List() {
     <TableRow key={product._id}>
       <TableCell>
         <img
-           src={productt(product.image) || "/carimage1.jpg"}
+          src={productt(product.image) || "/carimage1.jpg"}
           // src={product.image ? productt(product.image) : "/images/carimage1.jpg"}
           alt={product.title}
           style={{ height: "100px", objectFit: "contain" }}
@@ -488,89 +493,92 @@ export default function List() {
         </CardActions>
       </Card> */}
 
-
-<Card
-      sx={{
-        transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
-        "&:hover": { transform: "scale(1.05)", boxShadow: 10 },
-        borderRadius: 4,
-        overflow: "hidden",
-        background: "linear-gradient(135deg, #ffffff, #f8f8f8)",
-        boxShadow: 3,
-      }}
-    >
-      {/* Product Image */}
-      <CardMedia
+      <Card
+        sx={{
+          transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+          "&:hover": { transform: "scale(1.05)", boxShadow: 10 },
+          borderRadius: 4,
+          overflow: "hidden",
+          background: "linear-gradient(135deg, #ffffff, #f8f8f8)",
+          boxShadow: 3,
+        }}
+      >
+        {/* Product Image */}
+        <CardMedia
           component="img"
-           height="200"
+          height="200"
           //  image={productt(product.image) || "/carimage1.jpg"}
-          image={product.image && productt(product.image) ? productt(product.image) : "/imagescar.jpg"}
+          image={
+            product.image && productt(product.image)
+              ? productt(product.image)
+              : "/imagescar.jpg"
+          }
           alt={product.title}
           sx={{ objectFit: "contain" }}
         />
 
-      {/* Card Content */}
-      <CardContent>
-        <Typography
-          gutterBottom
-          variant="h6"
-          component="div"
-          align="center"
-          sx={{ fontWeight: "bold", color: "#333" }}
-        >
-          {product.title}
-        </Typography>
-        <Typography variant="body2" color="text.secondary" align="center">
-          {product.description}
-        </Typography>
-      </CardContent>
+        {/* Card Content */}
+        <CardContent>
+          <Typography
+            gutterBottom
+            variant="h6"
+            component="div"
+            align="center"
+            sx={{ fontWeight: "bold", color: "#333" }}
+          >
+            {product.title}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" align="center">
+            {product.description}
+          </Typography>
+        </CardContent>
 
-      {/* Actions Section */}
-      <CardActions sx={{ padding: 2, justifyContent: "space-between" }}>
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth
-          onClick={() => handleViewDetails(product._id)}
-          startIcon={loadingDetails ? <DownloadingIcon /> : null}
-          sx={{
-            backgroundColor: "#ff4081",
-            "&:hover": { backgroundColor: "#f50057" },
-          }}
-        >
-          {loadingDetails ? "Loading..." : "View Details"}
-        </Button>
+        {/* Actions Section */}
+        <CardActions sx={{ padding: 2, justifyContent: "space-between" }}>
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            onClick={() => handleViewDetails(product._id)}
+            startIcon={loadingDetails ? <DownloadingIcon /> : null}
+            sx={{
+              backgroundColor: "#ff4081",
+              "&:hover": { backgroundColor: "#f50057" },
+            }}
+          >
+            {loadingDetails ? "Loading..." : "View Details"}
+          </Button>
 
-        <IconButton
-          color="error"
-          onClick={() => {
-            setDeleteId(product._id);
-            setModal(true);
-          }}
-          sx={{
-            backgroundColor: "#ffecec",
-            borderRadius: "50%",
-            "&:hover": { backgroundColor: "#ffcccc" },
-          }}
-        >
-          <DeleteIcon />
-        </IconButton>
+          <IconButton
+            color="error"
+            onClick={() => {
+              setDeleteId(product._id);
+              setModal(true);
+            }}
+            sx={{
+              backgroundColor: "#ffecec",
+              borderRadius: "50%",
+              "&:hover": { backgroundColor: "#ffcccc" },
+            }}
+          >
+            <DeleteIcon />
+          </IconButton>
 
-        <Button
-          href={`/cms/list/${product._id}`}
-          variant="contained"
-          fullWidth
-          startIcon={loadingEdit ? <UpdateIcon /> : null}
-          onClick={() => handleEdit(product._id)}
-          sx={{
-            backgroundColor: "#2196F3",
-            "&:hover": { backgroundColor: "#1976D2" },
-          }}
-        >
-          {loadingEdit ? "Loading..." : "Edit"}
-        </Button>
-      </CardActions>
-    </Card>
+          <Button
+            href={`/cms/list/${product._id}`}
+            variant="contained"
+            fullWidth
+            startIcon={loadingEdit ? <UpdateIcon /> : null}
+            onClick={() => handleEdit(product._id)}
+            sx={{
+              backgroundColor: "#2196F3",
+              "&:hover": { backgroundColor: "#1976D2" },
+            }}
+          >
+            {loadingEdit ? "Loading..." : "Edit"}
+          </Button>
+        </CardActions>
+      </Card>
     </Grid>
   );
 
@@ -629,7 +637,7 @@ export default function List() {
           confirm={handleDelete}
           cancle={() => setModal(false)}
           title="Are You Sure?"
-          subtitle="You will not be able to recover this product"
+         subtitle="You will not be able to recover this product"
           type="warning"
           confirmBtnText=""
           confirmBtnBsStyle=""
