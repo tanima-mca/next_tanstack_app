@@ -9,7 +9,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <Wrapper>
-        <Toaster position="top-right" />
+        <Toaster />
         <Component {...pageProps} />
       </Wrapper>
     </QueryClientProvider>

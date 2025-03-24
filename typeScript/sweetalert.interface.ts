@@ -6,13 +6,10 @@ export interface IsweetAlertProps {
     type: "success" | "error" | "warning" | "info" | undefined;
     confirmBtnText:string;
     confirmBtnBsStyle:string;
-    
-    
-   
-   
   }
   
   export interface sweetAlertProps extends IsweetAlertProps {
     user: IsweetAlertProps;
   }
   
+

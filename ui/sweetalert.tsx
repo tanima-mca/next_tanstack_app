@@ -25,3 +25,4 @@ function SweetAlertComponent({
 }
 
 export default SweetAlertComponent;
+

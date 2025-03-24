@@ -317,6 +317,7 @@ export default function List() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [loadingDetails, setLoadingDetails] = useState(false);
   const [loadingEdit, setLoadingEdit] = useState(false);
+  // const dummyImage = "/images/carimage1.jpg";
 
   const perPage = 10;
 
@@ -336,7 +337,7 @@ export default function List() {
 
     mutate(formData, {
       onSuccess: () => {
-        toast.success("Product deleted successfully!");
+        // toast.success("Product deleted successfully!");
         setModal(false);
         setDeleteId(null);
       },
@@ -380,7 +381,8 @@ export default function List() {
     <TableRow key={product._id}>
       <TableCell>
         <img
-          src={productt(product.image) || "/placeholder.jpg"}
+           src={productt(product.image) || "/carimage1.jpg"}
+          // src={product.image ? productt(product.image) : "/images/carimage1.jpg"}
           alt={product.title}
           style={{ height: "100px", objectFit: "contain" }}
         />
@@ -421,7 +423,7 @@ export default function List() {
 
   const renderCard = (product: any) => (
     <Grid item xs={12} sm={6} md={4} key={product._id}>
-      <Card
+      {/* <Card
         sx={{
           transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
           "&:hover": { transform: "scale(1.05)", boxShadow: 8 },
@@ -429,8 +431,9 @@ export default function List() {
       >
         <CardMedia
           component="img"
-          height="200"
-          image={productt(product.image) || "/placeholder.jpg"}
+           height="200"
+          //  image={productt(product.image) || "/carimage1.jpg"}
+          image={product.image && productt(product.image) ? productt(product.image) : "/imagescar.jpg"}
           alt={product.title}
           sx={{ objectFit: "contain" }}
         />
@@ -483,7 +486,91 @@ export default function List() {
             </Button>
           </Box>
         </CardActions>
-      </Card>
+      </Card> */}
+
+
+<Card
+      sx={{
+        transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+        "&:hover": { transform: "scale(1.05)", boxShadow: 10 },
+        borderRadius: 4,
+        overflow: "hidden",
+        background: "linear-gradient(135deg, #ffffff, #f8f8f8)",
+        boxShadow: 3,
+      }}
+    >
+      {/* Product Image */}
+      <CardMedia
+          component="img"
+           height="200"
+          //  image={productt(product.image) || "/carimage1.jpg"}
+          image={product.image && productt(product.image) ? productt(product.image) : "/imagescar.jpg"}
+          alt={product.title}
+          sx={{ objectFit: "contain" }}
+        />
+
+      {/* Card Content */}
+      <CardContent>
+        <Typography
+          gutterBottom
+          variant="h6"
+          component="div"
+          align="center"
+          sx={{ fontWeight: "bold", color: "#333" }}
+        >
+          {product.title}
+        </Typography>
+        <Typography variant="body2" color="text.secondary" align="center">
+          {product.description}
+        </Typography>
+      </CardContent>
+
+      {/* Actions Section */}
+      <CardActions sx={{ padding: 2, justifyContent: "space-between" }}>
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          onClick={() => handleViewDetails(product._id)}
+          startIcon={loadingDetails ? <DownloadingIcon /> : null}
+          sx={{
+            backgroundColor: "#ff4081",
+            "&:hover": { backgroundColor: "#f50057" },
+          }}
+        >
+          {loadingDetails ? "Loading..." : "View Details"}
+        </Button>
+
+        <IconButton
+          color="error"
+          onClick={() => {
+            setDeleteId(product._id);
+            setModal(true);
+          }}
+          sx={{
+            backgroundColor: "#ffecec",
+            borderRadius: "50%",
+            "&:hover": { backgroundColor: "#ffcccc" },
+          }}
+        >
+          <DeleteIcon />
+        </IconButton>
+
+        <Button
+          href={`/cms/list/${product._id}`}
+          variant="contained"
+          fullWidth
+          startIcon={loadingEdit ? <UpdateIcon /> : null}
+          onClick={() => handleEdit(product._id)}
+          sx={{
+            backgroundColor: "#2196F3",
+            "&:hover": { backgroundColor: "#1976D2" },
+          }}
+        >
+          {loadingEdit ? "Loading..." : "Edit"}
+        </Button>
+      </CardActions>
+    </Card>
     </Grid>
   );
 

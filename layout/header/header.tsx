@@ -24,8 +24,9 @@ import Link from "next/link";
 import ProfileModal from "@/pages/cms/profiledetails/profiledetails";
 import { useRouter } from "next/router";
 import { useUserStore } from "@/toolkit/store/store";
-import { useCookies } from "react-cookie";
+import { Cookies, useCookies } from "react-cookie";
 import toast from "react-hot-toast";
+import { profile_pic } from "@/api/axios/axios";
 
 const Header: React.FC = () => {
   const router = useRouter();
@@ -36,7 +37,9 @@ const Header: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isProductMenuOpen, setIsProductMenuOpen] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies();
-  const profilePic = user?.profilePic || "https://example.com/profile-pic.jpg";
+  const [pic, setPic] = useState<object | any>();
+  const cookie = new Cookies();
+  const image = cookie.get("profile_pic");
 
   // Sync Zustand state with cookies on component mount
   useEffect(() => {
@@ -47,9 +50,26 @@ const Header: React.FC = () => {
     }
   }, [cookies.token, setToken, setUser]);
 
+  // useEffect(() => {
+  //   if (cookies.token) {
+  //     setToken(cookies.token);
+  //     if (userData) {
+  //       setPic(userData);
+  //     }
+  //   } else {
+  //     setToken("");
+  //   }
+  // }, [cookies.token, setToken]);
+
+  // useEffect(() => {
+  //   console.log("User Data:", pic);
+  // }, [pic]);
+
   // Logout function
   const handleLogout = () => {
     removeCookie("token", { path: "/" });
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setToken("");
 
     toast.success("Logout Successfully");
@@ -57,6 +77,10 @@ const Header: React.FC = () => {
   };
 
   // Login function
+  // const handleLogin = () => {
+  //   router.push("/auth/login");
+  // };
+
   const handleLogin = () => {
     router.push("/auth/login");
   };
@@ -83,10 +107,11 @@ const Header: React.FC = () => {
   return (
     <AppBar position="static" style={{ backgroundColor: "#ce93d8" }}>
       <Toolbar>
-        <IconButton size="large" edge="start" color="inherit" aria-label="logo">
-          <ProductionQuantityLimitsIcon />
-        </IconButton>
-
+        <Link href="/cms/home" passHref>
+          <IconButton size="large" edge="start" aria-label="logo">
+            <ProductionQuantityLimitsIcon />
+          </IconButton>
+        </Link>
         <Typography
           variant="h5"
           component="div"
@@ -94,8 +119,10 @@ const Header: React.FC = () => {
         >
           My Beauty Product App
         </Typography>
-
         <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center" }}>
+          <Button color="inherit" component={Link} href="/cms/home">
+            Home
+          </Button>
           <Button
             color="inherit"
             onMouseEnter={(e) => setProductMenuAnchor(e.currentTarget)}
@@ -125,22 +152,46 @@ const Header: React.FC = () => {
           </Menu>
 
           {token ? (
-            <Button onClick={handleLogout} color="inherit">
-              Logout
-            </Button>
+            <>
+              {/* <Typography variant="body1" color="#fff">
+                Hello, {pic?.first_name }
+              </Typography> */}
+
+              <Button onClick={handleLogout} color="inherit">
+                Logout
+              </Button>
+            </>
           ) : (
             <Button onClick={handleLogin} color="inherit">
               Sign In
             </Button>
           )}
+
+          {token ? (
+            <>
+              <img
+                src={profile_pic(image)}
+                height="40px"
+                width="40px"
+                style={{ borderRadius: "50%", objectFit: "cover" }}
+                alt="Profile Picture"
+              />
+            </>
+          ) : (
+            ""
+          )}
         </Box>
 
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Avatar
-            src={profilePic}
-            sx={{ width: 40, height: 40, cursor: "pointer" }}
-            onClick={() => setIsModalOpen(true)}
-          />
+          {/* {token  ( 
+              <Avatar
+                src={`https://wtsacademy.dedicateddevelopers.us/uploads/user/profile_pic/${pic.profile_pic}`}
+                sx={{ width: 40, height: 40, cursor: "pointer" }}
+                onClick={() => setIsModalOpen(true)}
+              />
+            )}
+
+            {/* Profile Modal */}
           {isModalOpen && (
             <ProfileModal
               isOpen={isModalOpen}

@@ -11,8 +11,6 @@ export const allProductsAPICall = async (page: number, perPage: number) => {
   return res;
 };
 
-
-
 export const allProductDetails = async (id: string): Promise<detailsProps | null> => {
   const res = await axiosInstance.get<{ data: detailsProps }>(endPoints.pages.details + id);
   return res.data.data;

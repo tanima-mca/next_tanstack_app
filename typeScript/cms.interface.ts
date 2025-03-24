@@ -100,3 +100,8 @@ export interface productmodalProps {
   isOpen: boolean;
   onClose: () => void;
 }
+export interface FooterLink {
+  id: number;
+  title: string;
+  link: string;
+}

@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
 import Header from "../header/header";
+import Footer from "../footer/footer";
 
 
 interface props {
@@ -10,6 +11,7 @@ const Wrapper: React.FC<props> = ({ children }) => {
     <div>
       <Header/>
       {children}
+      <Footer/>
     </div>
   );
 };

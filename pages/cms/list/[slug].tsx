@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { FieldValues, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import {
   Button,
@@ -72,7 +72,7 @@ export default function UpdateProduct() {
     // setloading(true);
     mutate(formdata, {
       onSuccess: () => {
-        toast.success("Product Data Updated Successfully");
+        // toast.success("Product Data Updated Successfully");
         router.push("/cms/list");
       },
       onError: () => {

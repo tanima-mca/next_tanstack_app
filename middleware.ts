@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export function middleware(request: any) {
   const token = request.cookies.get("token");
- 
+
   if (!token) {
     return NextResponse.redirect(new URL("/auth/login", request.url));
   }
@@ -11,8 +11,5 @@ export function middleware(request: any) {
 }
 
 export const config = {
-  matcher: [
-    "/cms/create",
-    "/cms/list",
-  ],
+  matcher: ["/cms/home", "/cms/create", "/cms/list"],
 };

@@ -47,14 +47,14 @@ export const allProductsQuery = (
 //   });
 // };
 
-export const fetchProductQuery = (
-  id: string | number
-): UseQueryResult<detailsProps, unknown> => {
+export const fetchProductQuery = (id: string | number): UseQueryResult<detailsProps, unknown> => {
   return useQuery({
     queryKey: ["PRODUCTDETAILS", id],
     queryFn: () => allProductDetails(`${id}`),
   });
 };
+
+
 
 export const profileDetailsQuery = (): UseQueryResult<
   profiledetailsProps,
@@ -65,6 +65,7 @@ export const profileDetailsQuery = (): UseQueryResult<
     queryFn: profileDetails,
   });
 };
+
 
 export const createMutation = (): UseMutationResult<createProps, unknown> => {
   const { queryClient } = useGlobalHooks();
@@ -97,8 +98,7 @@ export const createMutation = (): UseMutationResult<createProps, unknown> => {
 export const deleteMutation = (): UseMutationResult<
   deleteProps,
   unknown,
-  unknown
-> => {
+  unknown> => {
   const { queryClient } = useGlobalHooks();
   const cookie = new Cookies();
 

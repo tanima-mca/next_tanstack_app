@@ -43,11 +43,27 @@ const Registration: React.FC = () => {
     if (image) {
       formdata.append("profile_pic", image);
     }
-    mutate(formdata, {});
-    console.log(formdata);
-    reset();
-    setImage(null);
-  };
+  //   mutate(formdata, {
+  //     onSuccess: (data) => {
+  //       if (data?.token) {
+  //         localStorage.setItem("token", data.token);
+  //         localStorage.setItem("user", JSON.stringify({
+  //           first_name: data.user.first_name,
+  //           profile_pic: data.user.profile_pic,
+  //         }));
+  //       }
+  //       router.push("/header");
+  //     },
+  //   });
+    
+  //   reset();
+  //   setImage(null);
+  // };
+  mutate(formdata, {});
+  console.log(formdata);
+  reset();
+  setImage(null);
+};
 
   const handleRegisterError = () => {
     router.push("/auth/login");
