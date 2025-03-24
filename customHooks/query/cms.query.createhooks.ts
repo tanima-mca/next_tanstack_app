@@ -9,13 +9,17 @@ import {
 } from "@/typeScript/cms.interface";
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { useGlobalHooks } from "../globalHooks/gloBalHooks";
-import { createProductFn } from "@/api/funcTions/create.api";
-import { deleteProductFn } from "@/api/funcTions/delete.api";
-import { allProductDetails,allProductsAPICall,} from "@/api/funcTions/list.api";
+// import { createProductFn } from "@/api/funcTions/create.api";
+// import { deleteProductFn } from "@/api/funcTions/delete.api";
+// import { allProductDetails,allProductsAPICall,} from "@/api/funcTions/list.api";
 import { listProps } from "@/typeScript/cms.interface";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { profileDetails } from "@/api/funcTions/profiledetails";
+import { allProductDetails, allProductsAPICall } from "@/pages/api/functions/list.api";
+import { createProductFn } from "@/pages/api/functions/create.api";
+import { deleteProductFn } from "@/pages/api/functions/delete.api";
+import { profileDetails } from "@/pages/api/functions/profiledetails";
+// import { profileDetails } from "@/api/funcTions/profiledetails";
 
 // export const allProductsQuery = (): UseQueryResult<listProps, unknown> => {
 //     return useQuery({

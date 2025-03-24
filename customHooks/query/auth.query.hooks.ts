@@ -3,9 +3,10 @@ import { Cookies } from "react-cookie";
 import { useGlobalHooks } from "../globalHooks/gloBalHooks";
 import { loginProps, registerProps } from "@/typeScript/auth.interface";
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
-import { loginFn, registerFn } from "@/api/funcTions/auth.api";
+
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
+import { loginFn, registerFn } from '@/pages/api/functions/auth.api';
 
 
 
