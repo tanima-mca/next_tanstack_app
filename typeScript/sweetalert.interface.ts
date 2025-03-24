@@ -9,7 +9,7 @@ export interface IsweetAlertProps {
   }
   
   export interface sweetAlertProps extends IsweetAlertProps {
-    user: IsweetAlertProps;
+    user?: IsweetAlertProps;
   }
   
 
