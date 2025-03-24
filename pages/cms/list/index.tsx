@@ -302,14 +302,12 @@ import IconButton from "@mui/material/IconButton";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import SweetAlertComponent from "@/ui/sweetalert";
-import {
-  allProductsQuery,
-  deleteMutation,
-} from "@/customHooks/query/cms.query.createhooks";
+// import  allProductsQuery, deleteMutation,} from "@/customHooks/query/cms.query.createhooks";
 import ProductDetailsModal from "../productdetails/productdetails";
 import { productt } from "@/api/axios/axios";
 import DownloadingIcon from "@mui/icons-material/Downloading";
 import UpdateIcon from "@mui/icons-material/Update";
+import { allProductsQuery, deleteMutation } from "@/customHooks/query/cms.query.createhooks";
 
 export default function List() {
   const [page, setPage] = useState(1);

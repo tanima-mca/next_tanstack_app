@@ -21,7 +21,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import Link from "next/link";
-import ProfileModal from "@/pages/cms/profiledetails/profiledetails";
+// import ProfileModal from "@/pages/cms/profiledetails/profiledetails";
 import { useRouter } from "next/router";
 import { useUserStore } from "@/toolkit/store/store";
 import { Cookies, useCookies } from "react-cookie";
@@ -192,12 +192,12 @@ const Header: React.FC = () => {
             )}
 
             {/* Profile Modal */}
-          {isModalOpen && (
+          {/* {isModalOpen && (
             <ProfileModal
               isOpen={isModalOpen}
               onClose={() => setIsModalOpen(false)}
             />
-          )}
+          )} */}
         </Box>
 
         <Box sx={{ display: { xs: "flex", md: "none" } }}>
