@@ -17,6 +17,7 @@ import {
   updateMutation,
 } from "@/customHooks/query/cms.query.createhooks";
 import toast from "react-hot-toast";
+const dummyImage = "/images/carimage.jpg";
 
 export default function UpdateProduct() {
   const router = useRouter();
@@ -37,25 +38,28 @@ export default function UpdateProduct() {
   } = useForm<updateProps>();
 
   const { mutate, isPending } = updateMutation();
-  const [image, setImage] = useState<Blob | File | null>(null);
+  const [image, setImage] = useState<Blob | File | string | null>(null);
 
   // useEffect(() => {
-  //   if (product) {
-  //     reset({
-  //       title: product.title,
-  //       description: product.description,
-  //     });
-  //     if (product.image) {
-  //       setImage(`https://wtsacademy.dedicateddevelopers.us/uploads/product/${product.image}`);
-
-  //     }
+  //   if (!isPending && !isErrorCategories && product) {
+  //     setValue("title", product.title);
+  //     setValue("description", product.description);
   //   }
-  // }, [product,reset]);
+  // }, [product, setValue, isPending, isErrorCategories]);
 
   useEffect(() => {
     if (!isPending && !isErrorCategories && product) {
       setValue("title", product.title);
       setValue("description", product.description);
+
+      // If product has an actual image, use it. Otherwise, use the dummy image.
+      if (product.image && product.image !== dummyImage) {
+        setImage(
+          `https://wtsacademy.dedicateddevelopers.us/uploads/product/${product.image}`
+        );
+      } else {
+        setImage(dummyImage);
+      }
     }
   }, [product, setValue, isPending, isErrorCategories]);
 
@@ -168,7 +172,7 @@ export default function UpdateProduct() {
                 marginBottom: 2,
               }}
             />
-            {image ? (
+            {/* {image ? (
               <img
                 height="60px"
                 src={URL.createObjectURL(image)}
@@ -184,7 +188,25 @@ export default function UpdateProduct() {
                   className="upload-img"
                 />
               )
-            )}
+            )} */}
+
+            <img
+              height="90px"
+              src={
+                image
+                  ? typeof image === "string"
+                    ? image
+                    : URL.createObjectURL(image)
+                  : product?.image?.trim()
+                  ? `https://wtsacademy.dedicateddevelopers.us/uploads/product/${product.image}`
+                  : dummyImage
+              }
+              alt="Product"
+              className="upload-img"
+              onError={(e) => {
+                e.currentTarget.src = dummyImage; // Fallback to dummy image if the original fails
+              }}
+            />
           </Box>
           <Button
             variant="contained"

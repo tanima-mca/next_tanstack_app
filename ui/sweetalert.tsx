@@ -5,7 +5,6 @@ function SweetAlertComponent({
   confirm,
   cancle,
   title,
-  subtitle,
   type,
 }: sweetAlertProps) {
   return (
