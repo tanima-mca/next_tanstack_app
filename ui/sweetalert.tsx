@@ -21,10 +21,6 @@ function SweetAlertComponent({
     </SweetAlert>
   );
 }
-
-
-
-
 export default SweetAlertComponent;
 
 

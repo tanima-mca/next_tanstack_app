@@ -42,33 +42,33 @@ const Login: React.FC = () => {
     setShowPassword((prev) => !prev);
   };
 
-  // const onSubmit = async (formData: FieldValues) => {
-  //   const { email, password } = formData as { email: string; password: string };
-  //   const formdata = new FormData();
-  //   formdata.append("email", email);
-  //   formdata.append("password", password);
-
-  //   mutate(formData, {});
-  //   console.log(formData);
-  //   reset();
-  //   router.push("/cms/list");
-  //   reset();
-  // };
-
-
   const onSubmit = async (formData: FieldValues) => {
     const { email, password } = formData as { email: string; password: string };
-  
-    mutate(formData, {
-      onSuccess: (data) => {
-        console.log("Login Successful:", data);
-        router.push("/cms/list"); // ✅ Redirect only after success
-      },
-      onError: (error) => {
-        console.error("Login Failed:", error);
-      },
-    });
+    const formdata = new FormData();
+    formdata.append("email", email);
+    formdata.append("password", password);
+
+    mutate(formData, {});
+    console.log(formData);
+    reset();
+    router.push("/cms/list");
+    reset();
   };
+
+
+  // const onSubmit = async (formData: FieldValues) => {
+  //   const { email, password } = formData as { email: string; password: string };
+  
+  //   mutate(formData, {
+  //     onSuccess: (data) => {
+  //       console.log("Login Successful:", data);
+  //       router.push("/cms/list"); // ✅ Redirect only after success
+  //     },
+  //     onError: (error) => {
+  //       console.error("Login Failed:", error);
+  //     },
+  //   });
+  // };
 
   return (
     <>
